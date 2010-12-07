@@ -1,5 +1,3 @@
-#!/usr/local/bin/python3
-#
 # Python Module Reloader
 #
 # Copyright (c) 2009, 2010 Jon Parise <jon@indelible.org>
