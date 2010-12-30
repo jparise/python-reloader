@@ -80,8 +80,8 @@ class ModuleMonitor(threading.Thread):
 
 class Reloader(object):
 
-    def __init__(self):
-        self.monitor = ModuleMonitor()
+    def __init__(self, interval=1):
+        self.monitor = ModuleMonitor(interval=interval)
         self.monitor.start()
 
     def poll(self):
