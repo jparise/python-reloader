@@ -22,7 +22,11 @@
 
 import imp
 import os
-import queue
+try:
+    import queue
+except ImportError:
+    #python 2.x
+    import Queue as queue
 import reloader
 import sys
 import threading
@@ -48,7 +52,7 @@ class ModuleMonitor(threading.Thread):
     def _scan(self):
         # We're only interested in file-based modules (not C extensions).
         modules = [m.__file__ for m in sys.modules.values()
-                if '__file__' in m.__dict__]
+                if m and '__file__' in m.__dict__]
 
         for filename in modules:
             # We're only interested in the source .py files.
