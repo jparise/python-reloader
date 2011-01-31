@@ -22,7 +22,12 @@
 
 """Python Module Reloader"""
 
-import builtins
+try:
+    import builtins
+except ImportError:
+    #python 2.x
+    import __builtin__ as builtins
+
 import imp
 
 __author__ = 'Jon Parise <jon@indelible.org>'
