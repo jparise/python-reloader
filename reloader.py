@@ -1,6 +1,6 @@
 # Python Module Reloader
 #
-# Copyright (c) 2009, 2010 Jon Parise <jon@indelible.org>
+# Copyright (c) 2009, 2010, 2011 Jon Parise <jon@indelible.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,7 @@ except ImportError:
     import __builtin__ as builtins
 
 import imp
+import sys
 
 __author__ = 'Jon Parise <jon@indelible.org>'
 __version__ = '0.2'
@@ -127,8 +128,12 @@ def _import(name, globals=None, locals=None, fromlist=None, level=-1):
     parent = _parent
     _parent = name
 
-    # Perform the actual import using the base import function.
-    m = _baseimport(name, globals, locals, fromlist, level)
+    # Perform the actual import using the base import function.  We get the
+    # module directly from sys.modules because the import function only
+    # returns the top-level module reference for a nested import statement
+    # (e.g. `import package.module`).
+    _baseimport(name, globals, locals, fromlist, level)
+    m = sys.modules.get(name, None)
 
     # If we have a parent (i.e. this is a nested import) and this is a
     # reloadable (source-based) module, we append ourself to our parent's
