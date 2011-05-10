@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from distutils.core import setup
 
 version = __import__('reloader').__version__
