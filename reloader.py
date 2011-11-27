@@ -128,21 +128,21 @@ def _import(name, globals=None, locals=None, fromlist=None, level=-1):
     parent = _parent
     _parent = name
 
-    # Perform the actual import using the base import function.  We get the
-    # module directly from sys.modules because the import function only
-    # returns the top-level module reference for a nested import statement
-    # (e.g. `import package.module`).
-    _baseimport(name, globals, locals, fromlist, level)
-    m = sys.modules.get(name, None)
+    # Perform the actual import using the base import function.
+    base = _baseimport(name, globals, locals, fromlist, level)
 
-    # If we have a parent (i.e. this is a nested import) and this is a
-    # reloadable (source-based) module, we append ourself to our parent's
-    # dependency list.
-    if parent is not None and hasattr(m, '__file__'):
-        l = _dependencies.setdefault(parent, [])
-        l.append(m)
+    # If this is a nested import for a reloadable (source-based) module, we
+    # append ourself to our parent's dependency list.
+    if parent is not None:
+        # We get the module directly from sys.modules because the import
+        # function only returns the top-level module reference for a nested
+        # import statement (e.g. 'package' for `import package.module`).
+        m = sys.modules.get(name, None)
+        if m is not None and hasattr(m, '__file__'):
+            l = _dependencies.setdefault(parent, [])
+            l.append(m)
 
     # Lastly, we always restore our global _parent pointer.
     _parent = parent
 
-    return m
+    return base
