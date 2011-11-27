@@ -39,16 +39,25 @@ __all__ = ('enable', 'disable', 'get_dependencies', 'reload')
 _baseimport = builtins.__import__
 _dependencies = dict()
 _parent = None
+_existing_modules = None
 
-def enable():
+def enable(ignore_existing_dependencies=False):
     """Enable global module dependency tracking."""
+    global _existing_modules
+    if ignore_existing_dependencies:
+      _existing_modules = list(sys.modules.values())
+    else:
+      _existing_modules = []
     builtins.__import__ = _import
 
 def disable():
     """Disable global module dependency tracking."""
     builtins.__import__ = _baseimport
     _dependencies.clear()
+    global _parent
     _parent = None
+    global _existing_modules
+    _existing_modules = None
 
 def get_dependencies(m):
     """Get the dependency list for the given imported module."""
@@ -132,17 +141,22 @@ def _import(name, globals=None, locals=None, fromlist=None, level=-1):
     # module directly from sys.modules because the import function only
     # returns the top-level module reference for a nested import statement
     # (e.g. `import package.module`).
-    _baseimport(name, globals, locals, fromlist, level)
-    m = sys.modules.get(name, None)
+    base_returned_module = _baseimport(name, globals, locals, fromlist, level)
+    
+    # Don't add this module as a dependency if it was imported before
+    # enable() was called. This allows the user an explicit way to
+    # prevent modules from being reloaded.
+    if not base_returned_module in _existing_modules:
+      m = sys.modules.get(name, None)
 
-    # If we have a parent (i.e. this is a nested import) and this is a
-    # reloadable (source-based) module, we append ourself to our parent's
-    # dependency list.
-    if parent is not None and hasattr(m, '__file__'):
-        l = _dependencies.setdefault(parent, [])
-        l.append(m)
+      # If we have a parent (i.e. this is a nested import) and this is a
+      # reloadable (source-based) module, we append ourself to our parent's
+      # dependency list.
+      if parent is not None and hasattr(m, '__file__'):
+          l = _dependencies.setdefault(parent, [])
+          l.append(m)
 
     # Lastly, we always restore our global _parent pointer.
     _parent = parent
 
-    return m
+    return base_returned_module
