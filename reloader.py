@@ -132,7 +132,7 @@ def _import(name, globals=None, locals=None, fromlist=None, level=-1):
     # module directly from sys.modules because the import function only
     # returns the top-level module reference for a nested import statement
     # (e.g. `import package.module`).
-    _baseimport(name, globals, locals, fromlist, level)
+    base_returned_module = _baseimport(name, globals, locals, fromlist, level)
     m = sys.modules.get(name, None)
 
     # If we have a parent (i.e. this is a nested import) and this is a
@@ -145,4 +145,4 @@ def _import(name, globals=None, locals=None, fromlist=None, level=-1):
     # Lastly, we always restore our global _parent pointer.
     _parent = parent
 
-    return m
+    return base_returned_module
