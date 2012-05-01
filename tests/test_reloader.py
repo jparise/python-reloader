@@ -15,7 +15,7 @@ class ReloaderTest(TestCase):
         reloader.enable()
 
         self.write_module('testmodule', "def func(): return 'Some code.'\n")
-        import testmodule
+        from tests import testmodule
         self.assertEqual('Some code.', testmodule.func())
 
         self.write_module('testmodule', "def func(): return 'New code.'\n")
