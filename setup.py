@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
 
 version = __import__('reloader').__version__
 
@@ -18,4 +21,5 @@ setup(
                    'Operating System :: OS Independent',
                    'Programming Language :: Python'],
     py_modules = ['reloader'],
+    test_suite = 'tests',
 )
