@@ -25,7 +25,6 @@
 try:
     import builtins
 except ImportError:
-    #python 2.x
     import __builtin__ as builtins
 
 import imp
