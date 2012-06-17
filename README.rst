@@ -51,6 +51,22 @@ You can disable the reloader's dependency tracking at any time::
 
     reloader.disable()
 
+Blacklisting Modules
+--------------------
+
+There may be times when you don't want a module and its dependency hierarchy
+to be reloaded.  The module might rarely change and be expensive to import,
+for example.  To support these cases, you can explicit "blacklist" modules
+from the reloading process using the ``blacklist`` argument to ``enable()``.
+
+::
+
+    reloader.enable(blacklist=['os', 'ConfigParser'])
+
+The blacklist can be any iterable listing the fully-qualified names of modules
+that should be ignored.  Note that blacklisted modules will still appear in
+the dependency graph for completeness; they will just not be reloaded.
+
 An Interactive Example
 ----------------------
 

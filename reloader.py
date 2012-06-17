@@ -36,16 +36,29 @@ __version__ = '0.3'
 __all__ = ('enable', 'disable', 'get_dependencies', 'reload')
 
 _baseimport = builtins.__import__
+_blacklist = None
 _dependencies = dict()
 _parent = None
 
-def enable():
-    """Enable global module dependency tracking."""
+def enable(blacklist=None):
+    """Enable global module dependency tracking.
+
+    A blacklist can be specified to exclude specific modules (and their import
+    hierachies) from the reloading process.  The blacklist can be any iterable
+    listing the fully-qualified names of modules that should be ignored.  Note
+    that blacklisted modules will still appear in the dependency graph; they
+    will just not be reloaded.
+    """
+    global _blacklist
     builtins.__import__ = _import
+    if blacklist is not None:
+        _blacklist = frozenset(blacklist)
 
 def disable():
     """Disable global module dependency tracking."""
+    global _blacklist, _parent
     builtins.__import__ = _baseimport
+    _blacklist = None
     _dependencies.clear()
     _parent = None
 
@@ -68,6 +81,11 @@ def _deepcopy_module_dict(m):
 def _reload(m, visited):
     """Internal module reloading routine."""
     name = m.__name__
+
+    # If this module's name appears in our blacklist, skip its entire
+    # dependency hierarchy.
+    if _blacklist and name in _blacklist:
+        return
 
     # Start by adding this module to our set of visited modules.  We use this
     # set to avoid running into infinite recursion while walking the module
