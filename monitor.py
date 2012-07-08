@@ -34,6 +34,14 @@ import time
 
 _win32 = (sys.platform == 'win32')
 
+def _normalize_filename(filename):
+    if filename is not None:
+        if filename.endswith('.pyc') or filename.endswith('.pyo'):
+            filename = filename[:-1]
+        elif filename.endswith('$py.class'):
+            filename = filename[:-9] + '.py'
+    return filename
+
 class ModuleMonitor(threading.Thread):
     """Monitor module source file changes"""
 
@@ -56,8 +64,7 @@ class ModuleMonitor(threading.Thread):
 
         for filename in modules:
             # We're only interested in the source .py files.
-            if filename.endswith('.pyc') or filename.endswith('.pyo'):
-                filename = filename[:-1]
+            filename = _normalize_filename(filename)
 
             # stat() the file.  This might fail if the module is part of a
             # bundle (.egg).  We simply skip those modules because they're
@@ -100,7 +107,7 @@ class Reloader(object):
 
     def _reload(self, filenames):
         modules = [m for m in sys.modules.values()
-                if getattr(m, '__file__', None) in filenames]
+            if _normalize_filename(getattr(m, '__file__', None)) in filenames]
 
         for mod in modules:
             reloader.reload(mod)
