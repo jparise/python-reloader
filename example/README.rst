@@ -6,7 +6,7 @@ This is a simple example of dynamic reloading.
 Usage
 -----
 
-This is a simple example that show monitoring and automatic reloading. 
+This is a simple example that shows monitoring and automatic reloading. 
 
 To run, cd to the example directory and run either
 ::
