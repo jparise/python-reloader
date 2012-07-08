@@ -28,6 +28,8 @@ except ImportError:
     import __builtin__ as builtins
 
 import imp
+if not hasattr(imp, 'reload'):
+    imp.reload = reload
 import sys
 
 __author__ = 'Jon Parise <jon@indelible.org>'
