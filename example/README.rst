@@ -10,11 +10,13 @@ This is a simple example that show monitoring and automatic reloading.
 
 To run, cd to the example directory and run either
 ::
-python example.py
+
+    python example.py
 
 or
 
 ::
-jython example.py
+
+   jython example.py
 
 To see the dynamic reloading in action edit the another.py doit method and watch things change dynamically.
