@@ -40,6 +40,10 @@ _blacklist = None
 _dependencies = dict()
 _parent = None
 
+# Jython doesn't have imp.reload().
+if not hasattr(imp, 'reload'):
+    imp.reload = reload
+
 def enable(blacklist=None):
     """Enable global module dependency tracking.
 
