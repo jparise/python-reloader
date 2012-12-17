@@ -44,6 +44,9 @@ _parent = None
 if not hasattr(imp, 'reload'):
     imp.reload = reload
 
+# PEP 328 changed the default level to 0 in Python 3.3.
+_default_level = -1 if sys.version_info < (3, 3) else 0
+
 def enable(blacklist=None):
     """Enable global module dependency tracking.
 
@@ -141,7 +144,7 @@ def reload(m):
     the original module's dictionary after the module is reloaded."""
     _reload(m, set())
 
-def _import(name, globals=None, locals=None, fromlist=None, level=-1):
+def _import(name, globals=None, locals=None, fromlist=None, level=_default_level):
     """__import__() replacement function that tracks module dependencies."""
     # Track our current parent module.  This is used to find our current place
     # in the dependency graph.
