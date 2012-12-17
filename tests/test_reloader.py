@@ -52,7 +52,7 @@ class ReloaderTests(unittest.TestCase):
         reloader.enable(['blacklisted'])
 
         self.write_module('blacklisted', "def func(): return True\n")
-        self.write_module('testmodule', "import blacklisted\n")
+        self.write_module('testmodule', "import tests.blacklisted\n")
 
         import tests.blacklisted, tests.testmodule
 
