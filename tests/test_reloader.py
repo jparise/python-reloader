@@ -45,6 +45,8 @@ class ReloaderTests(unittest.TestCase):
         reloader.reload(tests.testmodule)
         self.assertEqual('More code.', tests.testmodule.func())
 
+        reloader.disable()
+
     def test_blacklist(self):
         import reloader
         reloader.enable(['blacklisted'])
@@ -53,6 +55,8 @@ class ReloaderTests(unittest.TestCase):
         self.write_module('testmodule', "import blacklisted\n")
 
         import tests.blacklisted, tests.testmodule
+
+        reloader.disable()
 
     def write_module(self, name, contents):
         filename = os.path.join(os.path.dirname(__file__), name + '.py')
