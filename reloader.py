@@ -29,6 +29,7 @@ except ImportError:
 
 import imp
 import sys
+import types
 
 __author__ = 'Jon Parise <jon@indelible.org>'
 __version__ = '0.3'
@@ -71,7 +72,8 @@ def disable():
 
 def get_dependencies(m):
     """Get the dependency list for the given imported module."""
-    return _dependencies.get(m.__name__, None)
+    name = m.__name__ if isinstance(m, types.ModuleType) else m
+    return _dependencies.get(name, None)
 
 def _deepcopy_module_dict(m):
     """Make a deep copy of a module's dictionary."""
