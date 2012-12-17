@@ -1,44 +1,63 @@
-from unittest import TestCase
-import sys
 import os
+import sys
+import unittest
 
-sys.dont_write_bytecode = True
+class ReloaderTests(unittest.TestCase):
 
+    def setUp(self):
+        self.modules = {}
 
-class ReloaderTest(TestCase):
+        # Save the existing system bytecode setting so that it can
+        # be restored later.  We need to disable bytecode writing
+        # for our module-(re)writing tests.
+        self._dont_write_bytecode = sys.dont_write_bytecode
+        sys.dont_write_bytecode = True
+
+    def tearDown(self):
+        # Clean up any modules that this test wrote.
+        for name, filename in self.modules.items():
+            if name in sys.modules:
+                del sys.modules[name]
+            if os.path.exists(filename):
+                os.unlink(filename)
+
+        # Restore the system bytecode setting.
+        sys.dont_write_bytecode = self._dont_write_bytecode
 
     def test_import(self):
         import reloader
+        self.assertTrue('reloader' in sys.modules)
+        self.assertTrue(hasattr(reloader, 'enable'))
 
     def test_reload(self):
         import reloader
         reloader.enable()
 
         self.write_module('testmodule', "def func(): return 'Some code.'\n")
-        from tests import testmodule
-        self.assertEqual('Some code.', testmodule.func())
+        import tests.testmodule
+        self.assertEqual('Some code.', tests.testmodule.func())
 
         self.write_module('testmodule', "def func(): return 'New code.'\n")
-        reloader.reload(testmodule)
-        self.assertEqual('New code.', testmodule.func())
+        reloader.reload(tests.testmodule)
+        self.assertEqual('New code.', tests.testmodule.func())
 
         self.write_module('testmodule', "def func(): return 'More code.'\n")
-        reloader.reload(testmodule)
-        self.assertEqual('More code.', testmodule.func())
+        reloader.reload(tests.testmodule)
+        self.assertEqual('More code.', tests.testmodule.func())
 
-    def tearDown(self):
-        self.remove_module('testmodule')
+    def test_blacklist(self):
+        import reloader
+        reloader.enable(['blacklisted'])
 
-    def write_module(self, module_name, str):
-        f = open(self.get_module_filename(module_name), 'w')
-        f.write(str)
+        self.write_module('blacklisted', "def func(): return True\n")
+        self.write_module('testmodule', "import blacklisted\n")
+
+        import tests.blacklisted, tests.testmodule
+
+    def write_module(self, name, contents):
+        filename = os.path.join(os.path.dirname(__file__), name + '.py')
+        self.modules['tests.' + name] = filename
+
+        f = open(filename, 'w')
+        f.write(contents)
         f.close()
-
-    def remove_module(self, module_name):
-        filename = self.get_module_filename(module_name)
-
-        if os.path.exists(filename):
-            os.unlink(filename)
-
-    def get_module_filename(self, module_name):
-        return os.path.join(os.path.dirname(__file__), module_name + '.py')
