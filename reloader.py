@@ -154,17 +154,20 @@ def _import(name, globals=None, locals=None, fromlist=None, level=_default_level
     parent = _parent
     _parent = name
 
-    # Perform the actual import using the base import function.
+    # Perform the actual import work using the base import function.
     base = _baseimport(name, globals, locals, fromlist, level)
 
-    # If this is a nested import for a reloadable (source-based) module, we
-    # append ourself to our parent's dependency list.
-    if parent is not None:
-        # We get the module directly from sys.modules because the import
-        # function only returns the top-level module reference for a nested
+    if base is not None and parent is not None:
+        # We manually walk through the imported hierarchy because the import
+        # function only returns the top-level package reference for a nested
         # import statement (e.g. 'package' for `import package.module`).
-        m = sys.modules.get(name, None)
-        if m is not None and hasattr(m, '__file__'):
+        m = base
+        for component in name.split('.')[1:]:
+            m = getattr(m, component)
+
+        # If this is a nested import for a reloadable (source-based) module,
+        # we append ourself to our parent's dependency list.
+        if hasattr(m, '__file__'):
             l = _dependencies.setdefault(parent, [])
             l.append(m)
 
