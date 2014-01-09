@@ -55,9 +55,9 @@ Blacklisting Modules
 --------------------
 
 There may be times when you don't want a module and its dependency hierarchy
-to be reloaded.  The module might rarely change and be expensive to import,
-for example.  To support these cases, you can explicit "blacklist" modules
-from the reloading process using the ``blacklist`` argument to ``enable()``.
+to be reloaded.  The module might rarely change and be expensive to import.
+To support these cases, you can explicitly "blacklist" modules from the
+reloading process using the ``blacklist`` argument to ``enable()``.
 
 ::
 
