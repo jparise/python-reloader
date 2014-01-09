@@ -32,7 +32,7 @@ import sys
 import types
 
 __author__ = 'Jon Parise <jon@indelible.org>'
-__version__ = '0.3'
+__version__ = '0.4'
 
 __all__ = ('enable', 'disable', 'get_dependencies', 'reload')
 
