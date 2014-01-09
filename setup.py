@@ -15,6 +15,7 @@ setup(
     author_email = 'jon@indelible.org',
     license = "MIT License",
     url = "https://github.com/jparise/python-reloader",
+    download_url = 'https://github.com/jparise/python-reloader/tarball/' + version,
     classifiers = ['Intended Audience :: Developers',
                    'License :: OSI Approved :: MIT License',
                    'Development Status :: 4 - Beta',
