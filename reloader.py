@@ -158,12 +158,15 @@ def _import(name, globals=None, locals=None, fromlist=None, level=_default_level
     base = _baseimport(name, globals, locals, fromlist, level)
 
     if base is not None and parent is not None:
+        m = base
+
         # We manually walk through the imported hierarchy because the import
         # function only returns the top-level package reference for a nested
-        # import statement (e.g. 'package' for `import package.module`).
-        m = base
-        for component in name.split('.')[1:]:
-            m = getattr(m, component)
+        # import statement (e.g. 'package' for `import package.module`) when
+        # no fromlist has been specified.
+        if fromlist is None:
+            for component in name.split('.')[1:]:
+                m = getattr(m, component)
 
         # If this is a nested import for a reloadable (source-based) module,
         # we append ourself to our parent's dependency list.
