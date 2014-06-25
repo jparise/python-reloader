@@ -169,8 +169,7 @@ def _import(name, globals=None, locals=None, fromlist=None, level=_default_level
                 try:
                     m = getattr(m, component)
                 except AttributeError:
-                    component = ".".join([m.__name__, component])
-                    m = sys.modules[component]
+                    m = sys.modules[m.__name__ + '.' + component]
 
         # If this is a nested import for a reloadable (source-based) module,
         # we append ourself to our parent's dependency list.
