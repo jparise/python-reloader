@@ -163,7 +163,9 @@ def _import(name, globals=None, locals=None, fromlist=None, level=_default_level
         # We manually walk through the imported hierarchy because the import
         # function only returns the top-level package reference for a nested
         # import statement (e.g. 'package' for `import package.module`) when
-        # no fromlist has been specified.
+        # no fromlist has been specified.  It's possible that the package
+        # might not have all of its descendents as attributes, in which case
+        # we fall back to using the immediate ancestor of the module instead.
         if fromlist is None:
             for component in name.split('.')[1:]:
                 try:
