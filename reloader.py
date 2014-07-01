@@ -166,7 +166,10 @@ def _import(name, globals=None, locals=None, fromlist=None, level=_default_level
         # no fromlist has been specified.
         if fromlist is None:
             for component in name.split('.')[1:]:
-                m = getattr(m, component)
+                try:
+                    m = getattr(m, component)
+                except AttributeError:
+                    m = sys.modules[m.__name__ + '.' + component]
 
         # If this is a nested import for a reloadable (source-based) module,
         # we append ourself to our parent's dependency list.
