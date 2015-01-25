@@ -1,6 +1,6 @@
 # Python Module Reloader
 #
-# Copyright (c) 2009-2014 Jon Parise <jon@indelible.org>
+# Copyright (c) 2009-2015 Jon Parise <jon@indelible.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,7 @@ import sys
 import types
 
 __author__ = 'Jon Parise <jon@indelible.org>'
-__version__ = '0.5'
+__version__ = '0.6'
 
 __all__ = ('enable', 'disable', 'get_dependencies', 'reload')
 
