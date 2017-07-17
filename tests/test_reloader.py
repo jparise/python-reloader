@@ -2,6 +2,13 @@ import os
 import sys
 import unittest
 
+try:
+    from importlib import invalidate_caches
+except ImportError:
+    def invalidate_caches():
+        pass
+
+
 class ReloaderTests(unittest.TestCase):
 
     def setUp(self):
@@ -12,6 +19,8 @@ class ReloaderTests(unittest.TestCase):
         # for our module-(re)writing tests.
         self._dont_write_bytecode = sys.dont_write_bytecode
         sys.dont_write_bytecode = True
+
+        invalidate_caches()
 
     def tearDown(self):
         # Clean up any modules that this test wrote.
@@ -65,3 +74,5 @@ class ReloaderTests(unittest.TestCase):
         f = open(filename, 'w')
         f.write(contents)
         f.close()
+
+        invalidate_caches()
