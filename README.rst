@@ -1,7 +1,7 @@
 Python Module Reloader
 ======================
 
-.. image:: https://secure.travis-ci.org/jparise/python-reloader.png?branch=master
+.. image:: https://secure.travis-ci.org/jparise/python-reloader.svg?branch=master
    :target: http://travis-ci.org/jparise/python-reloader
 
 This library implements a dependency-based module reloader for Python.  Unlike
@@ -21,7 +21,7 @@ dependency information for modules that were imported before it was enabled or
 after it is disabled, so you'll probably want to enable the reloader early in
 your application's startup process.
 
-::
+.. code-block:: python
 
     import reloader
     reloader.enable()
@@ -31,23 +31,31 @@ your application's startup process.
     import module2
 
 To manually reload an imported module, pass it to the reloader's ``reload()``
-method::
+method:
+
+.. code-block:: python
 
     import example
     reloader.reload(example)
 
 Note that you must pass the module object itself and not a string containing
 the module's name.  If you only have the module's name, you can fetch the
-module object from the global ``sys.modules`` dictionary::
+module object from the global ``sys.modules`` dictionary:
+
+.. code-block:: python
 
     reloader.reload(sys.modules['example'])
 
 You can also query a module's dependencies for informational or debugging
-purposes::
+purposes:
+
+.. code-block:: python
 
     reloader.get_dependencies(example)
 
-You can disable the reloader's dependency tracking at any time::
+You can disable the reloader's dependency tracking at any time:
+
+.. code-block:: python
 
     reloader.disable()
 
@@ -59,7 +67,7 @@ to be reloaded.  The module might rarely change and be expensive to import.
 To support these cases, you can explicitly "blacklist" modules from the
 reloading process using the ``blacklist`` argument to ``enable()``.
 
-::
+.. code-block:: python
 
     reloader.enable(blacklist=['os', 'ConfigParser'])
 
@@ -72,11 +80,15 @@ An Interactive Example
 
 This example demonstrates how easily the reloader can be used from the
 interactive Python interpretter.  Imagine you have the module ``example.py``
-open in a text editor, and it contains the following::
+open in a text editor, and it contains the following:
+
+.. code-block:: python
 
     print "I am example.py"
 
-Our interactive session starts like this::
+Our interactive session starts like this:
+
+.. code-block:: python
 
     >>> import reloader
     >>> reloader.enable()
@@ -84,7 +96,9 @@ Our interactive session starts like this::
     I am example.py
 
 Now modify ``example.py`` in your text editor.  You can then reload the
-``example`` in your interactive session::
+``example`` in your interactive session:
+
+.. code-block:: python
 
     >>> reloader.reload(example)
     I am the modified example.py
@@ -100,12 +114,16 @@ If a module has a ``__reload__()`` function, it will be called with a copy of
 the original module's dictionary after it has been reloaded.  This provides a
 convenient mechanism for preserving state between reloads.
 
-Consider a module named ``counts`` that contains the following code::
+Consider a module named ``counts`` that contains the following code:
+
+.. code-block:: python
 
     COUNTER = 0
 
 The module's ``COUNTER`` variable will be reset to 0 when the module is
-reloaded::
+reloaded:
+
+.. code-block:: python
 
     >>> import counts
     >>> counts.COUNTER += 1
@@ -116,13 +134,17 @@ reloaded::
     1
 
 We can preserve the value of ``COUNTER`` across reloads by adding a
-``__reload__()`` function to the ``counts`` module::
+``__reload__()`` function to the ``counts`` module:
+
+.. code-block:: python
 
     def __reload__(state):
         global COUNTER
         COUNTER = state['COUNTER']
 
-Now when we reload ``counts``::
+Now when we reload ``counts``:
+
+.. code-block:: python
 
     >>> import counts
     >>> counts.COUNTER += 1
