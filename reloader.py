@@ -8,10 +8,10 @@
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in
 # all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -43,10 +43,11 @@ _parent = None
 
 # Jython doesn't have imp.reload().
 if not hasattr(imp, 'reload'):
-    imp.reload = reload
+    imp.reload = reload  # noqa
 
 # PEP 328 changed the default level to 0 in Python 3.3.
 _default_level = -1 if sys.version_info < (3, 3) else 0
+
 
 def enable(blacklist=None):
     """Enable global module dependency tracking.
@@ -62,6 +63,7 @@ def enable(blacklist=None):
     if blacklist is not None:
         _blacklist = frozenset(blacklist)
 
+
 def disable():
     """Disable global module dependency tracking."""
     global _blacklist, _parent
@@ -70,10 +72,12 @@ def disable():
     _dependencies.clear()
     _parent = None
 
+
 def get_dependencies(m):
     """Get the dependency list for the given imported module."""
     name = m.__name__ if isinstance(m, types.ModuleType) else m
     return _dependencies.get(name, None)
+
 
 def _deepcopy_module_dict(m):
     """Make a deep copy of a module's dictionary."""
@@ -86,6 +90,7 @@ def _deepcopy_module_dict(m):
     d = vars(m).copy()
     del d['__builtins__']
     return copy.deepcopy(d)
+
 
 def _reload(m, visited):
     """Internal module reloading routine."""
@@ -137,6 +142,7 @@ def _reload(m, visited):
     # Reset our parent pointer now that the reloading operation is complete.
     _parent = None
 
+
 def reload(m):
     """Reload an existing module.
 
@@ -146,7 +152,9 @@ def reload(m):
     the original module's dictionary after the module is reloaded."""
     _reload(m, set())
 
-def _import(name, globals=None, locals=None, fromlist=None, level=_default_level):
+
+def _import(name, globals=None, locals=None, fromlist=None,
+            level=_default_level):
     """__import__() replacement function that tracks module dependencies."""
     # Track our current parent module.  This is used to find our current place
     # in the dependency graph.

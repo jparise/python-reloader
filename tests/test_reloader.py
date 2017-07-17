@@ -63,7 +63,7 @@ class ReloaderTests(unittest.TestCase):
         self.write_module('blacklisted', "def func(): return True\n")
         self.write_module('testmodule', "import tests.blacklisted\n")
 
-        import tests.blacklisted, tests.testmodule
+        import tests.blacklisted, tests.testmodule  # noqa
 
         reloader.disable()
 

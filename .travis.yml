@@ -8,5 +8,9 @@ python:
   - pypy
   - pypy3
 sudo: false
+cache: pip
+before_install:
+  - pip install flake8
 script:
+  - python setup.py flake8
   - python setup.py test
