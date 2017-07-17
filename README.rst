@@ -13,10 +13,10 @@ A detailed discussion of the reloader's implementation is available here:
 
 .. |Build Status| image:: https://secure.travis-ci.org/jparise/python-reloader.svg
    :target: http://travis-ci.org/jparise/python-reloader
-.. |PyPI Version| image:: https://img.shields.io/pypi/v/python-reloader.svg
-   :target: https://pypi.python.org/pypi/python-reloader
-.. |Python Versions| image:: https://img.shields.io/pypi/pyversions/python-reloader.svg
-   :target: https://pypi.python.org/pypi/python-reloader
+.. |PyPI Version| image:: https://img.shields.io/pypi/v/reloader.svg
+   :target: https://pypi.python.org/pypi/reloader
+.. |Python Versions| image:: https://img.shields.io/pypi/pyversions/reloader.svg
+   :target: https://pypi.python.org/pypi/reloader
 
 Usage
 -----
