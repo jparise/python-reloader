@@ -1,12 +1,7 @@
 Python Module Reloader
 ======================
 
-.. |Build Status| image:: https://secure.travis-ci.org/jparise/python-reloader.svg
-   :target: http://travis-ci.org/jparise/python-reloader
-.. |PyPI Version| image:: https://img.shields.io/pypi/v/python-reloader.svg
-   :target: https://pypi.python.org/pypi/python-reloader
-.. |Python Versions| image:: https://img.shields.io/pypi/pyversions/python-reloader.svg
-   :target: https://pypi.python.org/pypi/python-reloader
+|Build Status| |PyPI Version| |Python Versions|
 
 This library implements a dependency-based module reloader for Python.  Unlike
 the builtin `reload()`_ function, this reloader will reload the requested
@@ -15,6 +10,13 @@ module *and all other modules that are dependent on that module*.
 A detailed discussion of the reloader's implementation is available here:
 
     http://www.indelible.org/ink/python-reloading/
+
+.. |Build Status| image:: https://secure.travis-ci.org/jparise/python-reloader.svg
+   :target: http://travis-ci.org/jparise/python-reloader
+.. |PyPI Version| image:: https://img.shields.io/pypi/v/python-reloader.svg
+   :target: https://pypi.python.org/pypi/python-reloader
+.. |Python Versions| image:: https://img.shields.io/pypi/pyversions/python-reloader.svg
+   :target: https://pypi.python.org/pypi/python-reloader
 
 Usage
 -----
