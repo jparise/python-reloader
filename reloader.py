@@ -27,6 +27,7 @@ try:
 except ImportError:
     import __builtin__ as builtins
 
+import copy
 import imp
 import sys
 import types
@@ -81,8 +82,6 @@ def get_dependencies(m):
 
 def _deepcopy_module_dict(m):
     """Make a deep copy of a module's dictionary."""
-    import copy
-
     # We can't deepcopy() everything in the module's dictionary because some
     # items, such as '__builtins__', aren't deepcopy()-able.  To work around
     # that, we start by making a shallow copy of the dictionary, giving us a
