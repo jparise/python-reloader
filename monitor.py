@@ -8,10 +8,10 @@
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in
 # all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,12 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import imp
 import os
 try:
     import queue
 except ImportError:
-    #python 2.x
+    # python 2.x
     import Queue as queue
 import reloader
 import sys
@@ -34,6 +33,7 @@ import time
 
 _win32 = (sys.platform == 'win32')
 
+
 def _normalize_filename(filename):
     if filename is not None:
         if filename.endswith('.pyc') or filename.endswith('.pyo'):
@@ -41,6 +41,7 @@ def _normalize_filename(filename):
         elif filename.endswith('$py.class'):
             filename = filename[:-9] + '.py'
     return filename
+
 
 class ModuleMonitor(threading.Thread):
     """Monitor module source file changes"""
@@ -89,6 +90,7 @@ class ModuleMonitor(threading.Thread):
             # Record this filename's current mtime.
             self.mtimes[filename] = mtime
 
+
 class Reloader(object):
 
     def __init__(self, interval=1):
@@ -106,7 +108,8 @@ class Reloader(object):
             self._reload(filenames)
 
     def _reload(self, filenames):
-        modules = [m for m in sys.modules.values()
+        modules = [
+            m for m in sys.modules.values()
             if _normalize_filename(getattr(m, '__file__', None)) in filenames]
 
         for mod in modules:

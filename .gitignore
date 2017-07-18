@@ -1,6 +1,6 @@
 *.py[co]
-*.class
-build
-dist
+build/
+dist/
+.eggs/
 *.egg-info
-.tox
+.tox/
