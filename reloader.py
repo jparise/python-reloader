@@ -183,8 +183,8 @@ def _import(name, globals=None, locals=None, fromlist=None,
         # If this is a nested import for a reloadable (source-based) module,
         # we append ourself to our parent's dependency list.
         if hasattr(m, '__file__'):
-            l = _dependencies.setdefault(parent, [])
-            l.append(m)
+            deps = _dependencies.setdefault(parent, [])
+            deps.append(m)
 
     # Lastly, we always restore our global _parent pointer.
     _parent = parent
