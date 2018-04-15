@@ -22,12 +22,17 @@
 
 """Python Module Reloader"""
 
-import __builtin__ as system_builtins
-
 import copy
 import imp
 import sys
 import types
+
+# Python 3 has builtins.__import__, but
+# Python 2 has __builtin__.__import__
+if sys.version_info[0] >= 3:
+    import builtins as system_builtins
+else:
+    import __builtin__ as system_builtins
 
 __author__ = 'Jon Parise <jon@indelible.org>'
 __version__ = '0.7.dev0'
