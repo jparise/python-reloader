@@ -1,7 +1,7 @@
 Python Module Reloader
 ======================
 
-|Build Status| |PyPI Version| |Python Versions|
+|Build Status| |PyPI Version|
 
 This library implements a dependency-based module reloader for Python.  Unlike
 the builtin `reload()`_ function, this reloader will reload the requested
@@ -14,8 +14,6 @@ A detailed discussion of the reloader's implementation is available here:
 .. |Build Status| image:: https://secure.travis-ci.org/jparise/python-reloader.svg
    :target: http://travis-ci.org/jparise/python-reloader
 .. |PyPI Version| image:: https://img.shields.io/pypi/v/reloader.svg
-   :target: https://pypi.python.org/pypi/reloader
-.. |Python Versions| image:: https://img.shields.io/pypi/pyversions/reloader.svg
    :target: https://pypi.python.org/pypi/reloader
 
 Usage
