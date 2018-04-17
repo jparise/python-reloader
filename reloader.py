@@ -22,22 +22,24 @@
 
 """Python Module Reloader"""
 
-try:
-    import builtins
-except ImportError:
-    import __builtin__ as builtins
-
 import copy
 import imp
 import sys
 import types
+
+# Python 3 has builtins.__import__, but
+# Python 2 has __builtin__.__import__
+if sys.version_info[0] >= 3:
+    import builtins as system_builtins
+else:
+    import __builtin__ as system_builtins
 
 __author__ = 'Jon Parise <jon@indelible.org>'
 __version__ = '0.7.dev0'
 
 __all__ = ('enable', 'disable', 'get_dependencies', 'reload')
 
-_baseimport = builtins.__import__
+_baseimport = system_builtins.__import__
 _blacklist = None
 _dependencies = dict()
 _parent = None
@@ -60,7 +62,7 @@ def enable(blacklist=None):
     will just not be reloaded.
     """
     global _blacklist
-    builtins.__import__ = _import
+    system_builtins.__import__ = _import
     if blacklist is not None:
         _blacklist = frozenset(blacklist)
 
@@ -68,7 +70,7 @@ def enable(blacklist=None):
 def disable():
     """Disable global module dependency tracking."""
     global _blacklist, _parent
-    builtins.__import__ = _baseimport
+    system_builtins.__import__ = _baseimport
     _blacklist = None
     _dependencies.clear()
     _parent = None
