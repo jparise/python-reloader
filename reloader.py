@@ -56,7 +56,7 @@ def enable(blacklist=None):
     """Enable global module dependency tracking.
 
     A blacklist can be specified to exclude specific modules (and their import
-    hierachies) from the reloading process.  The blacklist can be any iterable
+    hierarchies) from the reloading process.  The blacklist can be any iterable
     listing the fully-qualified names of modules that should be ignored.  Note
     that blacklisted modules will still appear in the dependency graph; they
     will just not be reloaded.
