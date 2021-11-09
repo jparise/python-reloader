@@ -83,7 +83,7 @@ An Interactive Example
 ----------------------
 
 This example demonstrates how easily the reloader can be used from the
-interactive Python interpretter.  Imagine you have the module ``example.py``
+interactive Python interpreter.  Imagine you have the module ``example.py``
 open in a text editor, and it contains the following:
 
 .. code-block:: python
